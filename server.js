@@ -3,7 +3,8 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const User = require('./models/User');
 const Post = require('./models/Post');
-const keys = require('./config/keys')
+const keys = require('./config/keys');
+const passport = require('passport')
 
 const db = keys.mongoURI;
 
@@ -13,6 +14,11 @@ mongoose
     .catch(err=> console.log(err));
 
 const app = express();
+
+//init passport
+app.use(passport.initialize());
+
+require('./config/passport')(passport);
 
 // Configure body parser
 
@@ -24,7 +30,7 @@ const userRoutes = require('./routes/User');
 app.use('/users', userRoutes);
 
 const postRoutes = require('./routes/Post');
-app.use('/posts', postRoutes);
+app.use('/posts', passport.authenticate('jwt', {session: false}), postRoutes);
 
 //Homepage
 
