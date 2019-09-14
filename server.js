@@ -29,7 +29,7 @@ app.use('/posts', postRoutes);
 
 app.get('/', (req, res) => res.json(
     {
-        msg: \n 'Hello World!!'
+        '\n' msg: '\n Hello World!!'
     }
 ));
 
