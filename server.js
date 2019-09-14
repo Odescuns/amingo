@@ -3,8 +3,9 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const User = require('./models/User');
 const Post = require('./models/Post');
+const keys = require('./config/keys')
 
-const db = "mongodb+srv://odescuns:olivier@cluster0-jzmpl.mongodb.net/test?retryWrites=true&w=majority"
+const db = keys.mongoURI;
 
 mongoose
     .connect(db, {})
