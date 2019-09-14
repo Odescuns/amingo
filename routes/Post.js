@@ -1,8 +1,17 @@
-const express = require('express')
-const Post = require('../models/Post')
+const express = require('express');
+const Post = require('../models/Post');
+const User = require('../models/User');
 
 const router = express.Router();
 
+/**
+ * Post route for register a new user
+ *
+ * @name POST /post
+ *
+ * @param {string} email - email of the user
+ * @param {string} message - the message
+ */
 router.post('/', (req, res) => {
     console.log('req.body.email->', req.body.email);
     User
@@ -27,10 +36,23 @@ router.post('/', (req, res) => {
         .catch(err => res.json({message: err}))
 });
 
-router.get('/', (req, res)=>{
-    Post.find()
-    .then(posts => res.json(posts))
-    .catch(err => res.json(err));
+/**
+ * Get route to fetch all the post from Posts collection
+ * 
+ * @name GET /post
+ */
+router.get('/', (req, res) => {
+    Post
+        .find()
+        .then(posts => res.json(posts))
+        .catch(err => res.json(err))
+});
+
+router.get('/getByEmail', (req, res) => {
+    Post
+        .find({email: req.query.email})
+        .then(posts => res.json(posts))
+        .catch(err => res.json(err))
 });
 
 module.exports = router;
