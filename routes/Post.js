@@ -3,19 +3,28 @@ const Post = require('../models/Post')
 
 const router = express.Router();
 
-router.post('/message', (req, res) => {
-    const newPost = new Phost({
-        message: req.body.message,
-        email: req.body.email,
-    })
-    newPost
-        .save()
-        .then(post=> {
-            res.json(post)
+router.post('/', (req, res) => {
+    console.log('req.body.email->', req.body.email);
+    User
+        .findOne({email: req.body.email})
+        .then(user => {
+            if (user) {
+                console.log("user->", user);
+                const newPost = new Post({
+                    email: req.body.email,
+                    message: req.body.message,
+                    userId: user._id
+                });
+            
+                newPost
+                    .save()
+                    .then(post => res.json(post))
+                    .catch(err => res.json(err))
+            } else {
+                res.json({message: "User is not found"});
+            }
         })
-        .catch(err=> {
-            res.json(err)
-        })
+        .catch(err => res.json({message: err}))
 });
 
 router.get('/', (req, res)=>{
